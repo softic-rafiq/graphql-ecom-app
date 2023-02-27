@@ -97,6 +97,7 @@ const typeDefs = gql`
   type Query {
     userNames: [String!]!
     products: [Product!]!
+    product(id: ID!): Product
   }
 
   type Product {
@@ -116,6 +117,15 @@ const resolvers = {
     },
     products: () => {
       return products;
+    },
+    product: (parent, args, context) => {
+      const { id } = args;
+      const product = products.find((product) => product.id === id);
+
+      if (!product) {
+        return null;
+      }
+      return product;
     },
   },
 };
